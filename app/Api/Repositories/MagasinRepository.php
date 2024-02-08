@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @author [Hala NEMRI]
+ * @email [nemri.helaa@gmail.com]
+ * @desc [PHP DEVELOPER]
+ */
+
 namespace App\Api\Repositories;
 
 use Database\Database;
@@ -111,8 +117,12 @@ class MagasinRepository
      */
     public function deleteMagasin($id)
     {
-        $sql = "DELETE FROM magasin WHERE id = ?";
-        return $this->db->query($sql, [$id]);
+        // Check if the magasin exists
+        if ($this->getMagasinById($id)) {
+            $sql = "DELETE FROM magasin WHERE id = ?";
+            return $this->db->query($sql, [$id]);
+        }
+        return false;
     }
 
     /**

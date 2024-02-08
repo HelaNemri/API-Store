@@ -1,5 +1,10 @@
 # API-Store
 
+# Installation du projet :
+
+- composer install
+- Importer le fichier "dump.sql" pour la génération de la base de donnée.
+
 # Structure du projet
 
 - Le endpoint est situé dans le dossier public

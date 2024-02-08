@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @author [Hala NEMRI]
+ * @email [nemri.helaa@gmail.com]
+ * @desc [PHP DEVELOPER]
+ */
+
 namespace Database;
 
 use PDO;

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @author [Hala NEMRI]
+ * @email [nemri.helaa@gmail.com]
+ * @desc [PHP DEVELOPER]
+ */
+
 namespace App\Api\Controllers;
 
 use App\Api\Repositories\MagasinRepository;
@@ -29,27 +35,34 @@ class MagasinController
      */
     public function getAllMagasins()
     {
-        // Retrieve all query parameters
-        $filters = $_GET;
 
-        // Retrieve specific additional parameters
-        $tri = $filters['tri'] ?? 'nom';
-        $ordre = $filters['ordre'] ?? 'asc';
+        try {
+            // Retrieve all query parameters
+            $filters = $_GET;
 
-        // Remove sorting and ordering from $filters
-        unset($filters['tri'], $filters['ordre']);
+            // Retrieve specific additional parameters
+            $tri = $filters['tri'] ?? 'nom';
+            $ordre = $filters['ordre'] ?? 'asc';
 
-        // Call the model method with the parameters
-        $data = $this->magasin->getFilteredMagasins($filters, $tri, $ordre);
+            // Remove sorting and ordering from $filters
+            unset($filters['tri'], $filters['ordre']);
 
-        // Mapping data from the database to a Magasin model
-        $magasins = [];
-        foreach ($data as $magasin) {
-            $magasins[] = HelperService::mapShop($magasin);
+            // Call the model method with the parameters
+            $data = $this->magasin->getFilteredMagasins($filters, $tri, $ordre);
+
+            // Throw new Exception if data is falsy
+            if (!$data) throw new \Exception('No magasins found');
+            // Mapping data from the database to a Magasin model
+            $magasins = [];
+            foreach ($data as $magasin) {
+                $magasins[] = HelperService::mapShop($magasin);
+            }
+
+            // Respond in JSON
+            HelperService::respondJson($magasins, $magasins !== null);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
-
-        // Respond in JSON
-        HelperService::respondJson($magasins, $magasins !== null);
     }
 
     /**
@@ -61,12 +74,17 @@ class MagasinController
      */
     public function getMagasinById($id)
     {
-        $data = $this->magasin->getMagasinById($id);
+        try {
+            $data = $this->magasin->getMagasinById($id);
+            // Throw new Exception if data is falsy
+            if (!$data) throw new \Exception('magasin with id ' . $id . ' is not found');
+            // Mapping data from the database to a Magasin model
+            $magasin = HelperService::mapShop($data);
 
-        // Mapping data from the database to a Magasin model
-        $magasin = HelperService::mapShop($data);
-
-        HelperService::respondJson($magasin ?? 'Magasin not found', $magasin !== null);
+            HelperService::respondJson($magasin);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -78,8 +96,14 @@ class MagasinController
      */
     public function addMagasin($data)
     {
-        $result = $this->magasin->addMagasin($data);
-        HelperService::respondJson($result ? 'Magasin added successfully' : 'Error adding the magasin', $result);
+        try {
+            $result = $this->magasin->addMagasin($data);
+            // Throw new Exception if result is falsy
+            if (!$result) throw new \Exception('Error adding the magasin');
+            HelperService::respondJson('Magasin added successfully', $result);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -91,7 +115,13 @@ class MagasinController
      */
     public function deleteMagasin($id)
     {
-        $result = $this->magasin->deleteMagasin($id);
-        HelperService::respondJson($result ? 'Magasin deleted successfully' : 'Error deleting the magasin', $result);
+        try {
+            $result = $this->magasin->deleteMagasin($id);
+            // Throw new Exception if result is falsy
+            if (!$result) throw new \Exception('magasin with id ' . $id . ' is not found');
+            HelperService::respondJson('Magasin deleted successfully', $result);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
 }

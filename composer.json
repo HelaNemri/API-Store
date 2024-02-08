@@ -1,9 +1,14 @@
 {
     "name": "api/store",
+    "authors": [
+        {
+            "name": "Hala NEMRI",
+            "email": "nemri.helaa@gmail.com"
+        }
+    ],
     "description": "",
     "autoload": {
-        "psr-4": {
-            "App\\": "app/",
+        "psr-4": {            "App\\": "app/",
             "Database\\": "database/",
             "Config\\": "config/",
             "Routes\\": "routes/"

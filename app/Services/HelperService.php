@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @author [Hala NEMRI]
+ * @email [nemri.helaa@gmail.com]
+ * @desc [PHP DEVELOPER]
+ */
+
 namespace App\Services;
 
 use App\Api\Models\Magasin;
@@ -18,11 +24,6 @@ class HelperService
      */
     public static function respondJson($data, $success = true)
     {
-        if (!$success) {
-            http_response_code(500);
-            $data['error'] = 'An error occurred';
-        }
-
         header('Content-Type: application/json');
         echo json_encode($data);
     }

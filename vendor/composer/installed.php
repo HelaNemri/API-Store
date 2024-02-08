@@ -3,7 +3,7 @@
         'name' => 'api/store',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '9c146cae9349e02074db41c7ea9cc4751741935f',
+        'reference' => 'cde1541f649c52d95c82e0b5ff96cc8045d4d142',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'api/store' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '9c146cae9349e02074db41c7ea9cc4751741935f',
+            'reference' => 'cde1541f649c52d95c82e0b5ff96cc8045d4d142',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
