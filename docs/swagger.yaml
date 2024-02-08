@@ -1,0 +1,226 @@
+openapi: 3.0.0
+info:
+  title: Store Management API
+  description: API allowing WSHOP to access a list of stores, filter, sort, add, delete, or modify stores.
+  version: 1.0.0
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /auth:
+    get:
+      summary: Generate an authentication token
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Success. Authentication token generated successfully.
+          content:
+            application/json:
+              example: "Bearer [token]"
+        "401":
+          description: Unauthorized. Authentication is required.
+  /magasins:
+    get:
+      summary: Retrieve the list of stores
+      parameters:
+        - name: ville
+          in: query
+          description: Filter by field (optional)
+          schema:
+            type: string
+        - name: tri
+          in: query
+          description: Field for sorting ("nom" by default) (optional)
+          schema:
+            type: string
+        - name: ordre
+          in: query
+          description: Sorting order (asc by default) (optional)
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+
+      responses:
+        "200":
+          description: Success. List of stores retrieved successfully.
+          content:
+            application/json:
+              example:
+                - id: 1
+                  nom: Magasin A
+                  ville: Ville A
+                  categorie: Catégorie A
+                  adresse: Adresse A
+                  code_postal: "12345"
+                  telephone: "+123456789"
+                  email: magasinA@example.com
+                  site_web: "https://www.magasinA.com"
+                  date_ouverture: "2022-01-01"
+                  description: Description du Magasin A
+                  tr_date_updated: "2022-02-01T12:00:00Z"
+                - id: 2
+                  nom: Magasin B
+                  ville: Ville B
+                  categorie: Catégorie B
+                  adresse: Adresse B
+                  code_postal: "67890"
+                  telephone: "+987654321"
+                  email: magasinB@example.com
+                  site_web: "https://www.magasinB.com"
+                  date_ouverture: "2022-02-01"
+                  description: Description du Magasin B
+                  tr_date_updated: "2022-02-05T09:30:00Z"
+        "401":
+          description: Unauthorized. Authentication is required.
+
+    post:
+      summary: Add a new store
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                ville:
+                  type: string
+                  description: "Ville is a required field."
+                categorie:
+                  type: string
+                adresse:
+                  type: string
+                code_postal:
+                  type: string
+                telephone:
+                  type: string
+                email:
+                  type: string
+                site_web:
+                  type: string
+                date_ouverture:
+                  type: string
+                  format: date
+                description:
+                  type: string
+            example:
+              nom: Nouveau Magasin
+              ville: Ville C
+              categorie: Catégorie C
+              adresse: Adresse C
+              code_postal: "54321"
+              telephone: "+555555555"
+              email: nouveauMagasin@example.com
+              site_web: "https://www.nouveauMagasin.com"
+              date_ouverture: "2022-03-01"
+              description: Description du Nouveau Magasin
+      responses:
+        "200":
+          description: Success. Store added successfully.
+          content:
+            application/json:
+              example: "Store added successfully"
+        "401":
+          description: Unauthorized. Authentication is required.
+  /magasins/{id}:
+    get:
+      summary: Retrieve a store by its ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the store to retrieve
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Success. Store retrieved successfully.
+          content:
+            application/json:
+              example:
+                id: 1
+                nom: Magasin A
+                ville: Ville A
+                categorie: Catégorie A
+                adresse: Adresse A
+                code_postal: "12345"
+                telephone: "+123456789"
+                email: magasinA@example.com
+                site_web: "https://www.magasinA.com"
+                date_ouverture: "2022-01-01"
+                description: Description du Magasin A
+                tr_date_updated: "2022-02-01T12:00:00Z"
+        "404":
+          description: Store not found.
+
+    put:
+      summary: Update a store by its ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the store to update
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              nom: Magasin Mis à Jour
+              ville: Ville Mise à Jour
+              categorie: Catégorie Mise à Jour
+              adresse: Adresse Mise à Jour
+              code_postal: "99999"
+              telephone: "+999999999"
+              email: magasinMisAJour@example.com
+              site_web: "https://www.magasinMisAJour.com"
+              date_ouverture: "2022-01-15"
+              description: Description du Magasin Mise à Jour
+      responses:
+        "200":
+          description: Success. Store updated successfully.
+          content:
+            application/json:
+              example: "Store updated successfully"
+        "404":
+          description: Store not found.
+        "401":
+          description: Unauthorized. Authentication is required.
+
+    delete:
+      summary: Delete a store by its ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the store to delete
+          required: true
+          schema:
+            type: integer
+          example: 1
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Success. Store deleted successfully.
+          content:
+            application/json:
+              example: "Store deleted successfully"
+        "404":
+          description: Store not found.
+        "401":
+          description: Unauthorized. Authentication is required.
